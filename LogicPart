@@ -1,0 +1,66 @@
+## What is the N-Queens Problem?
+
+The N-Queens problem is a classic puzzle where the goal is to place N queens on an N×N chessboard so that no two queens threaten each other. This means:
+- No two queens can be in the same row.
+- No two queens can be in the same column.
+- No two queens can be on the same diagonal.
+
+### Key Concepts
+- Backtracking: This is a method of solving problems incrementally, where you build a solution step by step and remove those solutions that fail to satisfy the conditions of the problem.
+
+### Code Breakdown
+
+Here’s a simplified explanation of the code:
+#### HTML Elements
+- Input Field: numberbox for the user to enter the number of queens.
+- Slider: slider to control the speed of the visualization.
+- Buttons: playButton to start the visualization and pauseButton to pause it.
+### JavaScript Code
+Here's a simplified explanation of the key parts of the JavaScript code.
+
+const numberbox = document.getElementById("numberbox");
+const slider = document.getElementById("slider");
+const playButton = document.getElementById('play-button');
+let n; // Number of queens
+let speed; // Speed of visualization
+
+class Queen {
+    constructor() {
+        this.position = []; // This will store the positions of queens
+        this.uuid = []; // Unique identifier for each board
+    }
+
+    // Function to start solving the N-Queens problem
+    async nQueen() {
+        this.solveQueen(0); // Start from the first row
+    }
+
+    // Recursive function to solve the N-Queens problem
+    async solveQueen(row) {
+        if (row === n) {
+            // All queens are placed
+            return true;
+        }
+        for (let col = 0; col < n; col++) {
+            if (this.isValid(row, col)) {
+                this.position[row] = col; // Place queen
+                await this.solveQueen(row + 1); // Move to next row
+                this.position[row] = -1; // Backtrack
+            }
+        }
+        return false; // No valid position found
+    }
+
+    // Check if placing a queen is valid
+    isValid(row, col) {
+        // Check column and diagonals for conflicts
+        for (let i = 0; i < row; i++) {
+            if (this.position[i] === col || 
+                this.position[i] - i === col - row || 
+                this.position[i] + i === col + row) {
+                return false; // Conflict found
+            }
+        }
+        return true; // No conflict
+    }
+}
